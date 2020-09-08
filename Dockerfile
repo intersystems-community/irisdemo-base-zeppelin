@@ -1,7 +1,8 @@
 # Multi-build Dockerfile. This image will not be included into our final image. 
 # We just need a reference to it. I will use that to extract IRIS jar files from it.
 # Think of it as a parallel universe we just entered and it is called now "universe 0".
-FROM intersystemsdc/iris-community:2020.3.0.200.0-zpm
+#FROM intersystemsdc/iris-community:2020.3.0.200.0-zpm
+FROM intersystemsdc/irisdemo-base-irishealthint-community:version-1.5
 
 # Here is our real image. This is the universe we are going to stay on. 
 FROM apache/zeppelin:0.9.0
@@ -56,9 +57,9 @@ RUN curl -sL --retry 3 \
  && rm -rf $HADOOP_HOME/share/doc \
  && chown -R root:root $HADOOP_HOME
 
-# SPARK Version 2.4.4
+# SPARK Version 2.1.1
 # This is the same version that the zeppelin image uses and that InterSystems currently supports
-ENV SPARK_VERSION 2.4.4
+ENV SPARK_VERSION 2.1.1
 ENV SPARK_PACKAGE spark-${SPARK_VERSION}-bin-without-hadoop
 ENV SPARK_HOME /usr/spark-${SPARK_VERSION}
 ENV SPARK_DIST_CLASSPATH="$HADOOP_HOME/etc/hadoop/*:$HADOOP_HOME/share/hadoop/common/lib/*:$HADOOP_HOME/share/hadoop/common/*:$HADOOP_HOME/share/hadoop/hdfs/*:$HADOOP_HOME/share/hadoop/hdfs/lib/*:$HADOOP_HOME/share/hadoop/hdfs/*:$HADOOP_HOME/share/hadoop/yarn/lib/*:$HADOOP_HOME/share/hadoop/yarn/*:$HADOOP_HOME/share/hadoop/mapreduce/lib/*:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_HOME/share/hadoop/tools/lib/*"
@@ -70,6 +71,24 @@ RUN curl -sL --retry 3 \
   | tar x -C /usr/ \
  && mv /usr/$SPARK_PACKAGE $SPARK_HOME \
  && chown -R root:root $SPARK_HOME
+
+# SPARK Version 2.4.4
+# This is the same version that the zeppelin image uses and that InterSystems currently supports
+#ENV HADOOP_VERSION 2.7
+#ENV SPARK_VERSION 2.4.4
+#ENV SPARK_PACKAGE spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}
+#ENV SPARK_PACKAGE spark-${SPARK_VERSION}-bin-without-hadoop
+#ENV SPARK_HOME /usr/spark-${SPARK_VERSION}
+#ENV PATH $PATH:${SPARK_HOME}/bin
+#ENV SPARK_OPTS --driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info
+#RUN echo "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/${SPARK_PACKAGE}.tgz" && \
+#  curl -sL --retry 3 \
+#  "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/${SPARK_PACKAGE}.tgz" \
+#  | tar -xz -C /usr/ \
+# && mv /usr/$SPARK_PACKAGE $SPARK_HOME \
+# && chown -R root:root $SPARK_HOME \
+# && chown -R root:root /custom/lib/ \
+# && chmod +x $SPARK_HOME/bin/load-spark-env.sh
 
 RUN /bin/bash -c "conda install -y conda=4.8.3 && \
     conda install -y pyodbc scikit-learn pandas && \
