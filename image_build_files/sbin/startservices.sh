@@ -34,12 +34,16 @@ fi
 
 for variable in SPARK_MASTER_URL IRIS_MASTER_HOST IRIS_MASTER_PORT IRIS_MASTER_NAMESPACE IRIS_MASTER_USERNAME IRIS_MASTER_PASSWORD;
 do
-    value=$(eval echo "\$$variable")
-    sed -i.bak "s/$variable/$value/g" /shared/zeppelin/conf/interpreter.json
-    #sed -i.bak "s/$variable/$value/g" /shared/spark/conf/spark-defaults.conf
+    for dirname in /shared/zeppelin/interpreter/*/
+    do
+        value=$(eval echo "\$$variable")
+        sed -i.bak "s/$variable/$value/g" $dirname/interpreter-setting.json
+        chmod g+r,o+r $dirname/interpreter-setting.json
+        #sed -i.bak "s/$variable/$value/g" /shared/spark/conf/spark-defaults.conf
+    done
 done
 
-chmod g+r,o+r /shared/zeppelin/conf/interpreter.json
+#chmod g+r,o+r /shared/zeppelin/conf/interpreter.json
 #chmod g+r,o+r /shared/spark/conf/spark-defaults.conf
 
 #sleep 120

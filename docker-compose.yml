@@ -26,8 +26,29 @@ services:
     - "4041:4040"     # Zeppelin Spark UI
     volumes:
     - type: bind
-      source: ./zeppelin_config/
-      target: /shared
+      source: ./zeppelin_config/zeppelin/logs
+      target: /shared/zeppelin/logs
+    - type: bind
+      source: ./zeppelin_config/zeppelin/conf
+      target: /shared/zeppelin/conf
+    - type: bind
+      source: ./zeppelin_config/zeppelin/notebook
+      target: /shared/zeppelin/notebook
+    - type: bind
+      source: ./zeppelin_config/zeppelin/interpreter/jdbc/interpreter-setting.json
+      target: /zeppelin/interpreter/jdbc/interpreter-setting.json
+    - type: bind
+      source: ./zeppelin_config/zeppelin/interpreter/python/interpreter-setting.json
+      target: /zeppelin/interpreter/python/interpreter-setting.json
+    - type: bind
+      source: ./zeppelin_config/zeppelin/interpreter/r/interpreter-setting.json
+      target: /zeppelin/interpreter/r/interpreter-setting.json
+    - type: bind
+      source: ./zeppelin_config/zeppelin/interpreter/spark/interpreter-setting.json
+      target: /zeppelin/interpreter/spark/interpreter-setting.json
+    - type: bind
+      source: ./zeppelin_config/zeppelin/interpreter/sparql/interpreter-setting.json
+      target: /zeppelin/interpreter/sparql/interpreter-setting.json
     - type: bind
       source: ./common_shared/      # - common_shared:/common_shared   # Shared between all spark nodes. Good place to place a file we are working with.
       target: /common_shared
@@ -41,76 +62,76 @@ services:
 
   # The spark cluster is not required for Zeppelin to work. You can comment the sparkmaster, worker1 and worker2 out of this file 
   # if you want. 
-  sparkmaster:
-    image: intersystemsdc/irisdemo-base-spark-iris:latest
-    hostname: sparkmaster # Must be always sparkmaster so that the zeppelin image can find it
-    init: true
-    environment:
-      SPARK_NODE_TYPE: Master
-      SPARK_PUBLIC_DNS: localhost
-      IRIS_MASTER_HOST: myIRISDB
-      IRIS_MASTER_PORT: 51773
-      IRIS_MASTER_USERNAME: SuperUser
-      IRIS_MASTER_PASSWORD: sys         # Make sure to change your password on myIRISDB to "sys"
-      IRIS_MASTER_NAMESPACE: USER
-    ports:
-      - 4040:4040
-      - 6066:6066
-      - 7077:7077
-      - 8080:8080   # Spark Master Portal
-    volumes:
-    - type: bind
-      source: ./common_shared/      # - common_shared:/common_shared   # Shared between all spark nodes. Good place to place a file we are working with.
-      target: /common_shared
+#  sparkmaster:
+#    image: intersystemsdc/irisdemo-base-spark-iris:latest
+#    hostname: sparkmaster # Must be always sparkmaster so that the zeppelin image can find it
+#    init: true
+#    environment:
+#      SPARK_NODE_TYPE: Master
+#      SPARK_PUBLIC_DNS: localhost
+#      IRIS_MASTER_HOST: myIRISDB
+#      IRIS_MASTER_PORT: 51773
+#      IRIS_MASTER_USERNAME: SuperUser
+#      IRIS_MASTER_PASSWORD: sys         # Make sure to change your password on myIRISDB to "sys"
+#      IRIS_MASTER_NAMESPACE: USER
+#    ports:
+#      - 4040:4040
+#      - 6066:6066
+#      - 7077:7077
+#      - 8080:8080   # Spark Master Portal
+#    volumes:
+#    - type: bind
+#      source: ./common_shared/      # - common_shared:/common_shared   # Shared between all spark nodes. Good place to place a file we are working with.
+#      target: /common_shared
 
-  worker1:
-    depends_on: 
-      - sparkmaster
-    image: intersystemsdc/irisdemo-base-spark-iris:latest
-    hostname: worker1
-    init: true
-    environment:
-      IRIS_MASTER_HOST: myIRISDB
-      IRIS_MASTER_PORT: 51773
-      IRIS_MASTER_USERNAME: SuperUser
-      IRIS_MASTER_PASSWORD: sys
-      IRIS_MASTER_NAMESPACE: USER
+#  worker1:
+#    depends_on: 
+#      - sparkmaster
+#    image: intersystemsdc/irisdemo-base-spark-iris:latest
+#    hostname: worker1
+#    init: true
+#    environment:
+#      IRIS_MASTER_HOST: myIRISDB
+#      IRIS_MASTER_PORT: 51773
+#      IRIS_MASTER_USERNAME: SuperUser
+#      IRIS_MASTER_PASSWORD: sys
+#      IRIS_MASTER_NAMESPACE: USER
+#
+#      SPARK_NODE_TYPE: Worker
+#      SPARK_WORKER_CORES: 1
+#      SPARK_WORKER_MEMORY: 1g   # You can give more memory to your work if you are getting errors when using Spark
+#      SPARK_WORKER_PORT: 8881
+#      SPARK_WORKER_WEBUI_PORT: 8081
+#      SPARK_PUBLIC_DNS: localhost
+#    ports:
+#      - 8081:8081   # Spark Worker Portal
+#    volumes: 
+#    - type: bind
+#      source: ./common_shared/  # - common_shared:/common_shared   # Shared between all spark nodes. Good place to place a file we are working with. 
+#      target: /common_shared
 
-      SPARK_NODE_TYPE: Worker
-      SPARK_WORKER_CORES: 1
-      SPARK_WORKER_MEMORY: 1g   # You can give more memory to your work if you are getting errors when using Spark
-      SPARK_WORKER_PORT: 8881
-      SPARK_WORKER_WEBUI_PORT: 8081
-      SPARK_PUBLIC_DNS: localhost
-    ports:
-      - 8081:8081   # Spark Worker Portal
-    volumes: 
-    - type: bind
-      source: ./common_shared/  # - common_shared:/common_shared   # Shared between all spark nodes. Good place to place a file we are working with. 
-      target: /common_shared
-
-  worker2:
-    depends_on: 
-      - sparkmaster
-    image: intersystemsdc/irisdemo-base-spark-iris:latest
-    hostname: worker2
-    init: true
-    environment:
-      IRIS_MASTER_HOST: myIRISDB
-      IRIS_MASTER_PORT: 51773
-      IRIS_MASTER_USERNAME: SuperUser
-      IRIS_MASTER_PASSWORD: sys
-      IRIS_MASTER_NAMESPACE: USER
-
-      SPARK_NODE_TYPE: Worker
-      SPARK_WORKER_CORES: 1
-      SPARK_WORKER_MEMORY: 1g   # You can give more memory to your work if you are getting errors when using Spark
-      SPARK_WORKER_PORT: 8882
-      SPARK_WORKER_WEBUI_PORT: 8082
-      SPARK_PUBLIC_DNS: localhost
-    ports:
-      - 8082:8082   # Spark Worker Portal
-    volumes:
-    - type: bind
-      source: ./common_shared/      # - common_shared:/common_shared   # Shared between all spark nodes. Good place to place a file we are working with.
-      target: /common_shared
+#  worker2:
+#    depends_on: 
+#      - sparkmaster
+#    image: intersystemsdc/irisdemo-base-spark-iris:latest
+#    hostname: worker2
+#    init: true
+#    environment:
+#      IRIS_MASTER_HOST: myIRISDB
+#      IRIS_MASTER_PORT: 51773
+#      IRIS_MASTER_USERNAME: SuperUser
+#      IRIS_MASTER_PASSWORD: sys
+#      IRIS_MASTER_NAMESPACE: USER
+#
+#      SPARK_NODE_TYPE: Worker
+#      SPARK_WORKER_CORES: 1
+#      SPARK_WORKER_MEMORY: 1g   # You can give more memory to your work if you are getting errors when using Spark
+#      SPARK_WORKER_PORT: 8882
+#      SPARK_WORKER_WEBUI_PORT: 8082
+#      SPARK_PUBLIC_DNS: localhost
+#    ports:
+#      - 8082:8082   # Spark Worker Portal
+#    volumes:
+#    - type: bind
+#      source: ./common_shared/      # - common_shared:/common_shared   # Shared between all spark nodes. Good place to place a file we are working with.
+#      target: /common_shared
