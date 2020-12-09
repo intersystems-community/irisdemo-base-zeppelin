@@ -1,5 +1,6 @@
 ## 1.4.1 (December 09, 2020)
-
+  - Updated interpreter setting files
+  - Fixing build script so it will build it with the current VERSION
 
 ## 1.4.0 (October 06, 2020)
 
