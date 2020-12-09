@@ -15,7 +15,7 @@
       "master": {
         "envName": "MASTER",
         "propertyName": "spark.master",
-        "defaultValue": "local[*]",
+        "defaultValue": "SPARK_MASTER_URL",
         "description": "Spark master uri. local | yarn-client | yarn-cluster | spark master address of standalone mode, ex) spark://master_host:7077",
         "type": "string"
       },
@@ -143,21 +143,21 @@
       "spark.iris.master.url": {
         "envName": null,
         "propertyName": "spark.iris.master.url",
-        "defaultValue": "IRIS://IRIS_MASTER_HOST:IRIS_MASTER_PORT/IRIS_MASTER_NAMESPACE"
+        "defaultValue": "jdbc:IRIS://IRIS_MASTER_HOST:IRIS_MASTER_PORT/IRIS_MASTER_NAMESPACE",
         "description": "URL for IRIS access through Spark connector",
         "type": "string"
       },
       "spark.iris.master.user": {
         "envName": null,
         "propertyName": "spark.iris.master.user",
-        "defaultValue": "IRIS_MASTER_USERNAME"
+        "defaultValue": "IRIS_MASTER_USERNAME",
         "description": "User name for IRIS access through Spark connector",
         "type": "string"
       },
-      "spark.iris.master.user": {
+      "spark.iris.master.password": {
         "envName": null,
         "propertyName": "spark.iris.master.password",
-        "defaultValue": "IRIS_MASTER_PASSWORD"
+        "defaultValue": "IRIS_MASTER_PASSWORD",
         "description": "Password for IRIS access through Spark connector",
         "type": "string"
       }
