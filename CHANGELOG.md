@@ -1,3 +1,6 @@
+## 1.4.2 (January 08, 2021)
+  - Updated IRIS image to be same version as that used for demo with IntegratedML
+
 ## 1.4.1 (December 09, 2020)
   - Updated interpreter setting files
   - Fixing build script so it will build it with the current VERSION
