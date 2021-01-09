@@ -1,7 +1,8 @@
 # Multi-build Dockerfile. This image will not be included into our final image. 
 # We just need a reference to it. I will use that to extract IRIS jar files from it.
 # Think of it as a parallel universe we just entered and it is called now "universe 0".
-FROM intersystemsdc/iris-community:2020.3.0.200.0-zpm
+FROM intersystemsdc/irisdemo-base-irishealthint-community:irishealth-ml-community.2020.3.0.302.0
+#FROM intersystemsdc/iris-community:2020.3.0.200.0-zpm
 #FROM intersystemsdc/irisdemo-base-irishealthint-community:version-1.5
 
 FROM bitnami/spark:2.4.4
