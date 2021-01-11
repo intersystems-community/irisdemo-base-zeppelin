@@ -57,11 +57,11 @@ for variable in SPARK_MASTER_URL IRIS_MASTER_HOST IRIS_MASTER_PORT IRIS_MASTER_N
 do
     value=$(eval echo "\$$variable")
     echo "Replacing $variable with $value in /zeppelin/conf/interpreter.json"
-    sed -i "s/$variable/$value/g" /zeppelin/conf/interpreter.json
+    sed -i "s/$variable/$value/g" /shared/zeppelin/conf/interpreter.json
 done
 
 
-chmod g+r,o+r /zeppelin/conf/interpreter.json
+chmod g+r,o+r shared/zeppelin/conf/interpreter.json
 #chmod g+r,o+r /shared/spark/conf/spark-defaults.conf
 
 #sleep 120
