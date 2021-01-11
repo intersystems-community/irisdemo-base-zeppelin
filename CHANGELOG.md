@@ -1,3 +1,6 @@
+## 1.4.4 (January 11, 2021)
+  - bugfix for startservices
+
 ## 1.4.3 (January 11, 2021)
   - bugfix for startservices
 
