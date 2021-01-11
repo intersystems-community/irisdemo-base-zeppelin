@@ -1,3 +1,6 @@
+## 1.4.3 (January 11, 2021)
+  - bugfix for startservices
+
 ## 1.4.2 (January 08, 2021)
   - Updated IRIS image to be same version as that used for demo with IntegratedML
 
